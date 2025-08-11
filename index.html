@@ -1,1 +1,90 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hero Spline</title>
+  <link rel="preconnect" href="https://my.spline.design" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="container">
+    <div class="nav" aria-label="Navigasi utama">
+      <div class="brand"><span class="dot" aria-hidden="true"></span> Showcase spline</div>
+      <div class="actions">
+        <button class="toggle" id="themeBtn" title="Toggle tema" aria-pressed="false">🌗</button>
+      </div>
+    </div>
+  </header>
 
+  <main class="container">
+    <section class="hero" aria-label="Bagian hero dengan iframe Spline 3D">
+      <div class="hero-copy reveal">
+        <span class="eyebrow">✨ Real-time 3D Portfolio</span>
+        <h1>Bangun Personal Branding Artist-mu <br/>dengan 3D Interaktif</h1>
+        <p class="lead">Tonjolkan karya terbaikmu dengan sentuhan 3D. Integrasi <strong>Spline</strong> membuat halaman hero terasa hidup—tanpa setup 3D yang ribet. Nikmati parallax, overlay HUD, dan modal fullscreen untuk pengalaman lebih imersif.</p>
+        <div class="cta">
+          <button class="btn primary" id="openModal">Lihat Fullscreen</button>
+          <button class="btn ghost" id="pauseMotion">Reduce Motion</button>
+        </div>
+        <div class="scroll-hint" aria-hidden="true"><span class="wheel"><span></span></span> Gulir untuk lihat karya</div>
+        <div class="badges"><span class="dot-ok" aria-hidden="true"></span> Ringan, responsif, & aksesibel</div>
+      </div>
+
+      <div class="spline-col reveal">
+        <div class="spline-wrap" id="splineWrap" role="img" aria-label="Visual 3D dari iframe Spline">
+          <div class="orbs">
+            <div class="orb one" data-depth="0.02"></div>
+            <div class="orb two" data-depth="-0.03"></div>
+            <div class="orb three" data-depth="0.04"></div>
+          </div>
+
+          <iframe
+            src="https://my.spline.design/untitled-GVsXUvRnC782iuttrsLcjlS5-CjF/"
+            loading="lazy"
+            title="Spline Preview"
+            referrerpolicy="no-referrer"
+            allow="fullscreen"
+          ></iframe>
+
+          <div class="hud">
+            <div class="chip like" data-depth="0.06">❤️ 1.2k Suka <span class="pill">Realtime</span></div>
+            <div class="chip live" data-depth="-0.05"><span class="dot" style="margin-right:8px"></span> Live Preview</div>
+            <div class="chip stats" data-depth="0.03">⚡ 60 FPS <span class="pill">Optimized</span></div>
+          </div>
+
+          <div class="glass" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="work" class="reveal" style="padding:72px 0 24px;text-align:center">
+      <h2 style="margin:0 0 8px">Karya Biasa aja</h2>
+      <p style="color:var(--muted);max-width:60ch;margin:0 auto">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos, minus eum? Eius?</p>
+    </section>
+
+    <dialog id="demoModal" aria-label="Preview fullscreen Spline">
+      <div class="modal-head">
+        <strong>Preview Fullscreen</strong>
+        <button class="icon-btn" id="closeModal" aria-label="Tutup modal">Tutup</button>
+      </div>
+      <div class="modal-body">
+        <iframe
+          src="https://my.spline.design/untitled-GVsXUvRnC782iuttrsLcjlS5-CjF/"
+          title="Spline Fullscreen"
+          allowfullscreen
+          referrerpolicy="no-referrer"
+        ></iframe>
+      </div>
+    </dialog>
+  </main>
+
+  <noscript>
+    <div class="container" style="margin-top:16px;color:#f33">
+      JavaScript dinonaktifkan. Parallax & modal tidak akan berfungsi.
+    </div>
+  </noscript>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
