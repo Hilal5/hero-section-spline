@@ -2,7 +2,7 @@
   --bg:#0b0b11; --muted:#9aa3b2; --text:#e7e9ee;
   --card: rgba(255,255,255,.06); --stroke: rgba(255,255,255,.12);
   --accent:#7c5cff; --accent-2:#00d1ff;
-  /* glow & orbs default (dark) */
+
   --glow1: rgba(124,92,255,.25);
   --glow2: rgba(0,209,255,.20);
   --orb1:#7c5cff; --orb2:#00d1ff; --orb3:#48ff9b;
@@ -17,21 +17,20 @@
 }
 
 [data-theme="senja"]{
-  --bg:#161014;                 /* dasar gelap hangat */
-  --text:#f7efe9;               /* teks krem hangat */
-  --muted:#d3b7ab;              /* teks sekunder */
+  --bg:#161014;                 
+  --text:#f7efe9;               
+  --muted:#d3b7ab;              
   --card:rgba(255,255,255,.06);
   --stroke:rgba(255,255,255,.10);
 
-  /* Aksen oranye → magenta */
-  --accent:#ff7a59;             /* oranye salmon */
-  --accent-2:#ff3d81;           /* magenta */
 
-  /* Glow latar lembut */
-  --glow1: rgba(255,122,89,.22);   /* oranye */
-  --glow2: rgba(255,61,129,.18);   /* magenta */
+  --accent:#ff7a59;             
+  --accent-2:#ff3d81;           
 
-  /* Orbs */
+  --glow1: rgba(255,122,89,.22);   
+  --glow2: rgba(255,61,129,.18);   
+
+ 
   --orb1:#ff7a59; --orb2:#ffb86b; --orb3:#ff3d81;
 }
 
@@ -106,7 +105,6 @@ iframe{width:100%;height:100%;border:0;display:block;margin:0 auto}
 .reveal{opacity:0;transform: translateY(12px);transition: .6s ease}
 .reveal.in{opacity:1;transform: none}
 
-/* Scroll hint */
 .scroll-hint{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:14px;margin-top:14px}
 .wheel{width:16px;height:26px;border-radius:10px;border:1px solid var(--stroke);display:inline-flex;justify-content:center;align-items:flex-start;padding-top:3px}
 .wheel span{display:block;width:4px;height:6px;border-radius:3px;background:var(--muted);animation:wheel 2s infinite}
@@ -192,11 +190,24 @@ body { padding-bottom: env(safe-area-inset-bottom); }
 
 @media (max-width: 720px) {
   .hud { display: none !important; }
-  /* Ringankan efek */
   .orb { filter: blur(16px); opacity: .18; }
 }
 
 [data-lite="1"] .hud { display: none !important; }
-[data-lite="1"] .orbs { display: none !important; }         /* orb dimatikan total */
-[data-lite="1"] .spline-wrap { transform: none !important; } /* matikan parallax */
-[data-lite="1"] .wheel span { animation: none !important; }  /* matikan anim kecil */
+[data-lite="1"] .orbs { display: none !important; }         
+[data-lite="1"] .spline-wrap { transform: none !important; } 
+[data-lite="1"] .wheel span { animation: none !important; }  
+
+.play3d{
+  position:absolute; inset:auto 0 0 0; 
+  margin:16px; padding:12px 16px; border-radius:12px;
+  border:1px solid var(--stroke); background:var(--card);
+  color:var(--text); font-weight:700; cursor:pointer; z-index:2;
+  backdrop-filter: blur(6px);
+}
+
+@media (max-width: 720px){
+  .nav{ backdrop-filter: none; }                 
+  .spline-wrap::after{ opacity:.12; }            
+  .orb{ filter: blur(14px); opacity:.16; }       
+}
