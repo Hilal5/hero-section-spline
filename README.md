@@ -4,7 +4,7 @@ Portfolio hero 3D interaktif berbasis **iframe Spline**, lengkap dengan parallax
 
 ---
 
-**Live web ->** 
+**Live web ->** https://hilal5.github.io/hero-section-spline/
 
 ---
 
