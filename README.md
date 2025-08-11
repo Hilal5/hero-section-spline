@@ -1,6 +1,9 @@
 # Hero Spline – Personal Artist (Advanced)
 
 Portfolio hero 3D interaktif berbasis **iframe Spline**, lengkap dengan parallax (mouse & touch), HUD overlay, modal fullscreen, dan toggle tema **dark → senja → light**. Sudah **responsif untuk Android** dan punya **Lite Mode** otomatis untuk perangkat/jaringan yang lebih lemah.
+
+---
+
 **Live web ->** 
 
 ---
