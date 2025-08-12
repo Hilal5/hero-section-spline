@@ -20,12 +20,54 @@ const net =
 const saveData = !!net?.saveData;
 const slowNet = /^(slow-2g|2g|3g)$/.test(net?.effectiveType || "");
 
-(function autoLiteMode() {
-  const lowMem = navigator.deviceMemory && navigator.deviceMemory <= 4; 
-  if (saveData || slowNet || lowMem) {
-    doc.setAttribute("data-lite", "1");
-    reduce = true; 
+function loadIframe(el) {
+  if (!el) return;
+  const ds = el.getAttribute("data-src");
+  if (ds && el.src !== ds) el.src = ds;
+}
+function unloadIframe(el) {
+  if (!el) return;
+  el.removeAttribute("src");
+}
+
+function applyReduceState() {
+  doc.toggleAttribute("data-reduce", reduce);
+
+  if (reduce && wrap) {
+    wrap.style.transform = "";
+    parallaxItems.forEach((el) => (el.style.transform = ""));
   }
+
+  const alreadyLoaded = !!frame?.getAttribute("src");
+  if (reduce) {
+    if (!alreadyLoaded) {
+      if (playBtn) playBtn.style.display = "";
+    }
+  } else {
+    if (!alreadyLoaded) loadIframe(frame);
+    if (playBtn) playBtn.style.display = "none";
+  }
+
+  if (btnReduce) {
+    btnReduce.textContent = reduce ? "Enable Motion" : "Reduce Motion";
+    btnReduce.setAttribute("aria-pressed", String(reduce));
+  }
+}
+
+(function initReduce() {
+  const lowMem = navigator.deviceMemory && navigator.deviceMemory <= 4; 
+  const lite = saveData || slowNet || lowMem;
+  if (lite) {
+    doc.setAttribute("data-lite", "1");
+    reduce = true;
+  }
+  applyReduceState();
+
+  const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mql.addEventListener?.("change", (e) => {
+    reduce = e.matches || reduce; 
+    applyReduceState();
+  });
 })();
 
 const THEME_ORDER = ["dark", "senja", "light"];
@@ -60,23 +102,22 @@ themeBtn?.addEventListener("click", () => {
   setTheme(next);
 });
 
-const liteAttr = doc.getAttribute("data-lite") === "1";
-const shouldDefer3D = isCoarse || slowNet || saveData || liteAttr;
+playBtn?.addEventListener("click", () => {
+  loadIframe(frame);
+  if (playBtn) playBtn.style.display = "none";
+});
 
-function enable3D(el, btn) {
-  if (!el) return;
-  if (!el.src && el.dataset.src) el.src = el.dataset.src;
-  if (btn) btn.style.display = "none";
-}
-
-if (shouldDefer3D) {
-  playBtn?.addEventListener("click", () => enable3D(frame, playBtn));
-} else {
+(function setup3DOnLoad() {
+  if (reduce) {
+    if (playBtn) playBtn.style.display = ""; 
+    return;
+  }
   const io3d = new IntersectionObserver(
     (entries, obs) => {
       entries.forEach((e) => {
         if (e.isIntersecting) {
-          enable3D(frame, playBtn);
+          loadIframe(frame);
+          if (playBtn) playBtn.style.display = "none";
           obs.disconnect();
         }
       });
@@ -84,7 +125,7 @@ if (shouldDefer3D) {
     { threshold: 0.6 }
   );
   frame && io3d.observe(frame);
-}
+})();
 
 openModal?.addEventListener("click", () => {
   if (modalFrame && !modalFrame.src && modalFrame.dataset.src) {
@@ -92,9 +133,28 @@ openModal?.addEventListener("click", () => {
   }
   modal?.showModal();
 });
-closeModal?.addEventListener("click", () => modal?.close());
+closeModal?.addEventListener("click", () => {
+  modal?.close();
+  unloadIframe(modalFrame);
+});
 modal?.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") modal.close();
+  if (e.key === "Escape") {
+    modal.close();
+    unloadIframe(modalFrame);
+  }
+});
+
+modal?.addEventListener("click", (e) => {
+  const rect = modal.getBoundingClientRect();
+  const inside =
+    e.clientX >= rect.left &&
+    e.clientX <= rect.right &&
+    e.clientY >= rect.top &&
+    e.clientY <= rect.bottom;
+  if (!inside) {
+    modal.close();
+    unloadIframe(modalFrame);
+  }
 });
 
 let ticking = false,
@@ -164,11 +224,7 @@ if (wrap && isCoarse) {
 
 btnReduce?.addEventListener("click", () => {
   reduce = !reduce;
-  btnReduce.textContent = reduce ? "Enable Motion" : "Reduce Motion";
-  if (reduce && wrap) {
-    wrap.style.transform = "";
-    parallaxItems.forEach((el) => (el.style.transform = ""));
-  }
+  applyReduceState();
 });
 
 const io = new IntersectionObserver(
@@ -180,7 +236,6 @@ const io = new IntersectionObserver(
   { threshold: 0.15 }
 );
 document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
-
 
 function scrollToDemo() {
   document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
